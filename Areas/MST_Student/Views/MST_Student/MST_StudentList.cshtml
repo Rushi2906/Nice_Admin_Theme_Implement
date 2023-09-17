@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@using System.Data;
+@model DataTable;
+
+<main class="main" id="main">
+    <div class="body">
+        <div class="d-flex mt-3 mb-3">
+            <h3>Student List</h3>
+        </div>
+        <div class="table-header d-flex">
+            <div class="add-button mr-auto">
+                <a asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentAdd">
+                    <input type="button" class="btn btn-success" value="Add New Record" />
+                </a>
+            </div>
+            <div class="pull-right col-xl-4 ms-lg-auto">
+                <div id="sample_1_filter" class="dataTables_filter">
+                    <input type="text" class="form-control input-group-sm input-small input-inline" id="sample_1" placeholder="Search" aria-controls="sample_1">
+                </div>
+            </div>
+        </div>
+        <table class="table mt-3 w-auto">
+            <thead>
+                <tr>
+                    <th scope="col">StudentName</th>
+                    <th scope="col">BranchName</th>
+                    <th scope="col">CityName</th>
+                    <th scope="col">Mob.NoStudent</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mob.NoFather</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">BirthDate
+                    <th>
+                    <th scope="col">Age</th>
+                    <th scope="col">IsActive</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="sample_2" class="w-auto">
+                @foreach (DataRow dr in Model.Rows)
+                {
+                    <tr class="w-auto">
+                        <td>@dr["StudentName"]</td>
+                        <td>@dr["BranchID"]</td>
+                        <td>@dr["CityID"]</td>
+                        <td>@dr["MobileNoStudent"]</td>
+                        <td>@dr["Email"]</td>
+                        <td>@dr["MobileNoFather"]</td>
+                        <td>@dr["Address"]</td>
+                        <td>@dr["BirthDate"]</td>
+                        <td>@dr["Age"]</td>
+                        <td>@dr["IsActive"]</td>
+                        <td>@dr["Gender"]</td>
+                        <td>@dr["Password"]</td>
+                        <td>
+                            <div class="d-flex">
+                                <div class="me-2">
+                                    <form method="post" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentDelete">
+                                        <input type="hidden" value="@Convert.ToInt32(dr["StudentID"])" name="StudentID" />
+                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="ms-2">
+                                    <form asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentAdd">
+                                        <input type="hidden" value="@Convert.ToInt32(dr["StudentID"])" name="StudentID" />
+                                        <button type="submit" class="btn btn-info" value="Update">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#sample_1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#sample_2 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
+
+
+
+

@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/shared/_Layout.cshtml";
+}
+
+@model Nice_Admin_Theme_Implement.Areas.LOC_Country.Models.LOC_CountryModel
+
+<main class="main" id="main">
+
+    @*Page Title*@
+    @*<div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="nav-link" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryList">Home</a></li>
+                <li class="breadcrumb-item"><a class="nav-link" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryList">Country</a></li>
+                <li class="breadcrumb-item active">Country Add</li>
+            </ol>
+        </nav>
+    </div>*@<!-- End Page Title -->
+
+    <breadcrumb></breadcrumb>
+
+    <div class="d-flex flex-column">
+        <form>
+            @Html.HiddenFor(x=>x.CountryID)
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mt-3 mb-3">
+                <h2>Add / Update Page</h2>
+            </div>
+            <div class="mb-3 row form-group">
+                <label class="col-sm-2 col-form-label">Country Name</label>
+                <div class="col-xl-4">
+                    <input type="text" class="form-control" asp-for="CountryName" />
+                    <span asp-validation-for="CountryName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label">Country Code</label>
+                <div class="col-xl-4">
+                    <input type="text" class="form-control" asp-for="CountryCode" />
+                    <span asp-validation-for="CountryCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Save">Add</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

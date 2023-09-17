@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "~/Views/shared/_Layout.cshtml";
+    LOC_CityFilterModel FilterModel = new LOC_CityFilterModel();
+}
+
+@using System.Data;
+@model DataTable;
+@using Nice_Admin_Theme_Implement.Areas.LOC_City.Models
+
+<main class="main" id="main">
+    <div class="body">
+        <div class="d-flex mt-3 mb-3">
+            <h3>City List</h3>
+        </div>
+        <div class="container-fluid border border-dark p-4">
+            <form class="row">
+                <div>
+                    <h2>Filter</h2>
+                </div>
+                <div class="col-3">
+                    <select class="form-control" asp-for="@FilterModel.CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))">
+                        <option value="">Select Country</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-control" asp-for="@FilterModel.StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                        <option value="">Select State</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" asp-for="@FilterModel.CityName" placeholder="Enter City Name" />
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control" asp-for="@FilterModel.CityCode" placeholder="Enter City Code" />
+                </div>
+                <div class="col-1 my-3 me-3">
+                    <button class="btn btn-primary" type="submit" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityFilter">Search</button>
+                </div>
+                <div class="col-10 my-3">
+                    <form>
+                        <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+                    </form>
+                </div>
+            </form>
+        </div>
+        <br />
+        <br />
+        <div class="table-header d-flex">
+            <div class="add-button mr-auto">
+                <a asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityAdd">
+                    <input type="button" class="btn btn-success" value="Add New Record" />
+                </a>
+            </div>
+            <div class="pull-right col-xl-4 ms-lg-auto">
+                <div id="sample_1_filter" class="dataTables_filter">
+                    <input type="text" class="form-control input-group-sm input-small input-inline" id="sample_1" placeholder="Search" aria-controls="sample_1">
+                </div>
+            </div>
+        </div>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">CityID</th>
+                    <th scope="col">CityName</th>
+                    <th scope="col">CityCode</th>
+                    <th scope="col">CountryName</th>
+                    <th scope="col">StateName</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Modified</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="sample_2">
+                @foreach (DataRow dr in Model.Rows)
+                {
+                    <tr>
+                        <td>@dr["CityID"]</td>
+                        <td>@dr["CityName"]</td>
+                        <td>@dr["CityCode"]</td>
+                        <td>@dr["CountryName"]</td>
+                        <td>@dr["StateName"]</td>
+                        <td>@Convert.ToDateTime(dr["CreationDate"]).ToString("dd-MM-yyyy")</td>
+                        <td>@Convert.ToDateTime(dr["Modified"]).ToString("dd-MM-yyyy")</td>
+                        <td>
+                            <div class="d-flex">
+                                <div class="me-2">
+                                    <form method="post" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityDelete">
+                                        <input type="hidden" value="@Convert.ToInt32(dr["CityID"])" name="CityID" />
+                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="ms-2">
+                                    <form asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityAdd">
+                                        <input type="hidden" value="@Convert.ToInt32(dr["CityID"])" name="CityID" />
+                                        <button type="submit" class="btn btn-info" value="Update">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#sample_1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#sample_2 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
+
+
+
+
