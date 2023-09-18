@@ -18,4 +18,12 @@
 
 
     }
+
+    public class MST_StudentFilterModel
+    {
+        public int? StudentID { get; set; }
+        public string? StudentName { get; set; }
+        public int? CityID { get; set;}
+        public int? BranchID { get; set; }
+    }
 }

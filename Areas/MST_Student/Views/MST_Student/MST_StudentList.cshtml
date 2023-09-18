@@ -1,14 +1,44 @@
 ﻿@{
     Layout = "~/Views/shared/_Layout.cshtml";
+    MST_StudentFilterModel FilterModel = new MST_StudentFilterModel();
 }
 
 @using System.Data;
 @model DataTable;
+@using Nice_Admin_Theme_Implement.Areas.MST_Student.Models;
 
 <main class="main" id="main">
     <div class="body">
         <div class="d-flex mt-3 mb-3">
             <h3>Student List</h3>
+        </div>
+        <div class="container-fluid border border-dark p-4">
+            <form class="row">
+                <div>
+                    <h2>Filter</h2>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" asp-for="@FilterModel.StudentName" placeholder="Enter Student Name" />
+                </div>
+                <div class="col-4">
+                    <select class="form-control" asp-for="@FilterModel.BranchID" asp-items="@(new SelectList(ViewBag.BranchList,"BranchID","BranchName"))">
+                        <option value="">Select Branch</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <select class="form-control" asp-for="@FilterModel.CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+                <div class="col-1 my-3 me-3">
+                    <button class="btn btn-primary" type="submit" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentFilter">Search</button>
+                </div>
+                <div class="col-10 my-3">
+                    <form>
+                        <button class="btn btn-danger" type="submit" runat="server" OnClientClick="this.form.reset();return false;">Clear</button>
+                    </form>
+                </div>
+            </form>
         </div>
         <div class="table-header d-flex">
             <div class="add-button mr-auto">
@@ -32,8 +62,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Mob.NoFather</th>
                     <th scope="col">Address</th>
-                    <th scope="col">BirthDate
-                    <th>
+                    <th scope="col">BirthDate</th>
                     <th scope="col">Age</th>
                     <th scope="col">IsActive</th>
                     <th scope="col">Gender</th>
@@ -46,8 +75,8 @@
                 {
                     <tr class="w-auto">
                         <td>@dr["StudentName"]</td>
-                        <td>@dr["BranchID"]</td>
-                        <td>@dr["CityID"]</td>
+                        <td>@dr["BranchName"]</td>
+                        <td>@dr["CityName"]</td>
                         <td>@dr["MobileNoStudent"]</td>
                         <td>@dr["Email"]</td>
                         <td>@dr["MobileNoFather"]</td>
