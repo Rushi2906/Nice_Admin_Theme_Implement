@@ -12,6 +12,7 @@
     <Folder Include="Areas\LOC_State\Data\" />
     <Folder Include="Areas\MST_Branch\Data\" />
     <Folder Include="Areas\MST_Student\Data\" />
+    <Folder Include="Areas\SYS_User\Data\" />
   </ItemGroup>
 
   <ItemGroup>

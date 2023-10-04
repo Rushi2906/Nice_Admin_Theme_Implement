@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nice_Admin_Theme_Implement.Areas.LOC_Country.Models;
+using Nice_Admin_Theme_Implement.Areas.SYS_User.Models;
+using Nice_Admin_Theme_Implement.BAL;
 using SmartBreadcrumbs.Attributes;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace Nice_Admin_Theme_Implement.Areas.LOC_Country.Controllers
 {
-    [DefaultBreadcrumb("Country")]
+    [Breadcrumb("Country")]
     [Area("LOC_Country")]
     [Route("LOC_Country/[controller]/[action]")]
     public class LOC_CountryController : Controller
@@ -29,6 +31,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_Country.Controllers
 
         #region Country List
 
+        [Breadcrumb(FromAction = "Index", Title = "Country List")]
         public IActionResult LOC_CountryList()
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -38,6 +41,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_Country.Controllers
             SqlCommand objCmd = connection.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.CommandText = "PR_Country_SelectAll";
+            //objCmd.Parameters.AddWithValue("UserID", CV.UserID());
             SqlDataReader objSDR = objCmd.ExecuteReader();
             dt.Load(objSDR);
             return View("LOC_CountryList", dt);
@@ -75,12 +79,29 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_Country.Controllers
             if (model.CountryID == null)
             {
                 objCmd.CommandText = "PR_Country_Insert";
+                ViewBag.Data = "Add";
+                TempData["LOC_Country_Insert_Message"] = "Record Inserted Successfully!!";
             }
             else
             {
                 objCmd.CommandText = "PR_Country_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@CountryID", model.CountryID);
+                ViewBag.Data = "Update";
+                TempData["LOC_Country_Insert_Message"] = "Record Updated Successfully!!";
             }
+
+            //if (Convert.ToBoolean(objCmd.ExecuteNonQuery()))
+            //{
+            //    if (model.CountryID == null)
+            //    {
+            //        TempData["LOC_Country_Insert_Message"] = "Record Inserted Successfully!!";
+            //    }
+            //    else
+            //    {
+            //        TempData["LOC_Country_Insert_Message"] = "Record Updated Successfully!!";
+            //    }
+
+            //}
 
             objCmd.Parameters.AddWithValue("@CountryName", model.CountryName);
             objCmd.Parameters.AddWithValue("@CountryCode", model.CountryCode);
@@ -89,9 +110,10 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_Country.Controllers
             return RedirectToAction("LOC_CountryList");
         }
 
-        [Breadcrumb(FromAction = "Index", Title = "Add Country")]
+        [Breadcrumb(FromAction = "Index", Title = "Add - Update Country")]
         public IActionResult LOC_CountryAdd(int? CountryID)
         {
+
             if (CountryID != null)
             {
                 string connectionStr = this.Configuration.GetConnectionString("myConnectionString");

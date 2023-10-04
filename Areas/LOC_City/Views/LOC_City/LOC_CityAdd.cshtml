@@ -7,8 +7,7 @@
 <main class="main" id="main">
     <div class="d-flex flex-column">
         <form method="post">
-            @Html.HiddenFor(x=>x.CityID);
-            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.HiddenFor(x=>x.CityID)
             <div class="mt-3 mb-3">
                 <h2>Add / Update Page</h2>
             </div>
@@ -45,7 +44,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-success" type="submit" asp-area="LOC_City" asp-controller="LOC_City" asp-action="Save">Add</button>
+                <button class="btn btn-success" type="submit" asp-area="LOC_City" asp-controller="LOC_City" asp-action="Save">Save</button>
+                <a class="btn btn-primary" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityList">Back</a>
             </div>
         </form>
     </div>

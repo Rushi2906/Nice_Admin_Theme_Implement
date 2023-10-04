@@ -12,6 +12,14 @@
         <div class="d-flex mt-3 mb-3">
             <h3>City List</h3>
         </div>
+
+        @if (TempData["LOC_City_Insert_Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["LOC_City_Insert_Message"]
+            </div>
+        }
+
         <div class="container-fluid border border-dark p-4">
             <form class="row">
                 <div>
@@ -60,7 +68,6 @@
         <table class="table mt-3">
             <thead>
                 <tr>
-                    <th scope="col">CityID</th>
                     <th scope="col">CityName</th>
                     <th scope="col">CityCode</th>
                     <th scope="col">CountryName</th>
@@ -74,7 +81,6 @@
                 @foreach (DataRow dr in Model.Rows)
                 {
                     <tr>
-                        <td>@dr["CityID"]</td>
                         <td>@dr["CityName"]</td>
                         <td>@dr["CityCode"]</td>
                         <td>@dr["CountryName"]</td>
@@ -86,7 +92,7 @@
                                 <div class="me-2">
                                     <form method="post" asp-area="LOC_City" asp-controller="LOC_City" asp-action="LOC_CityDelete">
                                         <input type="hidden" value="@Convert.ToInt32(dr["CityID"])" name="CityID" />
-                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete City : @dr["CityName"] ')">Delete</button>
                                     </form>
                                 </div>
                                 <div class="ms-2">

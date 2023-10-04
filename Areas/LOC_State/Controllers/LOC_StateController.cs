@@ -7,7 +7,7 @@ using SmartBreadcrumbs.Attributes;
 
 namespace Nice_Admin_Theme_Implement.Areas.LOC_State.Controllers
 {
-    //[DefaultBreadcrumb("State")]
+    [Breadcrumb("State")]
     [Area("LOC_State")]
     [Route("LOC_State/[controller]/[action]")]
     public class LOC_StateController : Controller
@@ -30,6 +30,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_State.Controllers
 
         #region State List
 
+        [Breadcrumb(FromAction = "Index", Title = "State List")]
         public IActionResult LOC_StateList()
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -104,11 +105,13 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_State.Controllers
             if (model.StateID == null)
             {
                 objCmd.CommandText = "PR_State_Insert";
+                TempData["LOC_State_Insert_Message"] = "Record Inserted Successfully!!";
             }
             else
             {
                 objCmd.CommandText = "PR_State_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@StateID", model.StateID);
+                TempData["LOC_State_Insert_Message"] = "Record Updated Successfully!!";
             }
 
             objCmd.Parameters.AddWithValue("@StateName", model.StateName);
@@ -119,7 +122,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_State.Controllers
             return RedirectToAction("LOC_StateList");
         }
 
-        //[Breadcrumb(FromAction = "Index", Title = "Add State")]
+        [Breadcrumb(FromAction = "Index", Title = "Add - Update State")]
         public IActionResult LOC_StateAdd(int? StateID)
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");

@@ -3,9 +3,11 @@ using System.Data.SqlClient;
 using System.Data;
 using Nice_Admin_Theme_Implement.Areas.MST_Branch.Models;
 using Nice_Admin_Theme_Implement.Areas.LOC_Country.Models;
+using SmartBreadcrumbs.Attributes;
 
 namespace Nice_Admin_Theme_Implement.Areas.MST_Branch.Controllers
 {
+    [Breadcrumb("Branch")]
     [Area("MST_Branch")]
     [Route("MST_Branch/[controller]/[action]")]
     public class MST_BranchController : Controller
@@ -28,6 +30,7 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Branch.Controllers
 
         #region Branch Select All
 
+        [Breadcrumb(FromAction = "Index", Title = "Branch List")]
         public IActionResult MST_BranchList()
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -73,11 +76,14 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Branch.Controllers
             if (model.BranchID == null)
             {
                 objCmd.CommandText = "PR_Branch_Insert";
+                TempData["MST_Branch_Insert_Message"] = "Record Inserted Successfully!!";
             }
             else
             {
                 objCmd.CommandText = "PR_Branch_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@BranchID", model.BranchID);
+                TempData["MST_Branch_Insert_Message"] = "Record Updated Successfully!!";
+
             }
             objCmd.Parameters.AddWithValue("@BranchName", model.BranchName);
             objCmd.Parameters.AddWithValue("@BranchCode", model.BranchCode);
@@ -86,6 +92,7 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Branch.Controllers
             return RedirectToAction("MST_BranchList");
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Add - Update Branch")]
         public IActionResult MST_BranchAdd(int? BranchID)
         {
             if (BranchID != null)

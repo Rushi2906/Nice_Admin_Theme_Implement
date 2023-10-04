@@ -13,6 +13,14 @@
         <div class="d-flex mt-3 mb-3">
             <h3>State List</h3>
         </div>
+
+        @if (TempData["LOC_State_Insert_Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["LOC_State_Insert_Message"]
+            </div>
+        }
+
         <div class="container-fluid border border-dark p-4">
             <form class="row">
                 <div><h2>Filter</h2></div>
@@ -82,7 +90,7 @@
                                 <div class="me-2">
                                     <form asp-area="LOC_State" asp-controller="LOC_State" asp-action="LOC_StateDelete">
                                         <input type="hidden" value="@Convert.ToInt32(dr["StateID"])" name="StateID" />
-                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete State : @dr["StateName"] ')">Delete</button>
                                     </form>
                                 </div>
                                 <div class="ms-2">

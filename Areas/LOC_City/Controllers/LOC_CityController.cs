@@ -4,9 +4,11 @@ using Nice_Admin_Theme_Implement.Areas.LOC_State.Models;
 using System.Data.SqlClient;
 using System.Data;
 using Nice_Admin_Theme_Implement.Areas.LOC_City.Models;
+using SmartBreadcrumbs.Attributes;
 
 namespace Nice_Admin_Theme_Implement.Areas.LOC_City.Controllers
 {
+    [Breadcrumb("City")]
     [Area("LOC_City")]
     [Route("LOC_City/[controller]/[action]")]
     public class LOC_CityController : Controller
@@ -29,6 +31,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_City.Controllers
 
         #region City List
 
+        [Breadcrumb(FromAction = "Index", Title = "City List")]
         public IActionResult LOC_CityList()
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -126,11 +129,13 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_City.Controllers
             if (model.CityID == null)
             {
                 objCmd.CommandText = "PR_City_Insert";
+                TempData["LOC_City_Insert_Message"] = "Record Inserted Successfully!!";
             }
             else
             {
                 objCmd.CommandText = "PR_City_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@CityID", model.CityID);
+                TempData["LOC_City_Insert_Message"] = "Record Updated Successfully!!";
             }
 
             objCmd.Parameters.AddWithValue("@CityName", model.CityName);
@@ -142,6 +147,7 @@ namespace Nice_Admin_Theme_Implement.Areas.LOC_City.Controllers
             return RedirectToAction("LOC_CityList");
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Add - Update City")]
         public IActionResult LOC_CityAdd(int? CityID)
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");

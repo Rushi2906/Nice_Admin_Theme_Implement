@@ -6,9 +6,11 @@ using System.Data.SqlClient;
 using System.Data;
 using Nice_Admin_Theme_Implement.Areas.LOC_Country.Models;
 using Nice_Admin_Theme_Implement.Areas.LOC_State.Models;
+using SmartBreadcrumbs.Attributes;
 
 namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
 {
+    [Breadcrumb("Student")]
     [Area("MST_Student")]
     [Route("MST_Student/[controller]/[action]")]
     public class MST_StudentController : Controller
@@ -31,6 +33,7 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
 
         #region Student Select All
 
+        [Breadcrumb(FromAction = "Index", Title = "Student List")]
         public IActionResult MST_StudentList()
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -47,11 +50,11 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
             dt1.Load(reader1);
             connection1.Close();
 
-            List<MST_BranchModel> list = new List<MST_BranchModel>();
+            List<MST_BranchDropDownModel> list = new List<MST_BranchDropDownModel>();
 
             foreach (DataRow dr in dt1.Rows)
             {
-                MST_BranchModel branchModel = new MST_BranchModel();
+                MST_BranchDropDownModel branchModel = new MST_BranchDropDownModel();
                 branchModel.BranchID = Convert.ToInt32(dr["BranchID"]);
                 branchModel.BranchName = dr["BranchName"].ToString();
                 list.Add(branchModel);
@@ -117,6 +120,7 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
 
         #region Add/Edit
 
+        
         public IActionResult Save(MST_StudentModel model)
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");
@@ -127,11 +131,15 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
             if (model.StudentID == null)
             {
                 objCmd.CommandText = "PR_Student_Insert";
+                TempData["MST_Student_Insert_Message"] = "Record Inserted Successfully!!";
+
             }
             else
             {
                 objCmd.CommandText = "PR_Student_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@StudentID", model.StudentID);
+                TempData["MST_Student_Insert_Message"] = "Record Updated Successfully!!";
+
             }
             objCmd.Parameters.AddWithValue("@BranchID", model.BranchID);
             objCmd.Parameters.AddWithValue("@CityID", model.CityID);
@@ -150,6 +158,7 @@ namespace Nice_Admin_Theme_Implement.Areas.MST_Student.Controllers
             return RedirectToAction("MST_StudentList");
         }
 
+        [Breadcrumb(FromAction = "Index", Title = "Add - Update Student")]
         public IActionResult MST_StudentAdd(int? StudentID)
         {
             string connectionStr = this.Configuration.GetConnectionString("myConnectionString");

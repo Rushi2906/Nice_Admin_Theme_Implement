@@ -13,6 +13,14 @@
             <h3>Branch List</h3>
         </div>
 
+        @if (TempData["MST_Branch_Insert_Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["MST_Branch_Insert_Message"]
+            </div>
+        }
+
+
         @*Filter Data*@
         <form class="row my-3 p-3" style="border:1px solid black">
             <div><h2>Filter</h2></div>
@@ -50,7 +58,6 @@
         <table class="table mt-3">
             <thead>
                 <tr>
-                    <th scope="col">BranchID</th>
                     <th scope="col">BranchName</th>
                     <th scope="col">BranchCode</th>
                     <th scope="col">Created</th>
@@ -62,7 +69,6 @@
                 @foreach (DataRow dr in Model.Rows)
                 {
                     <tr>
-                        <td>@dr["BranchID"]</td>
                         <td>@dr["BranchName"]</td>
                         <td>@dr["BranchCode"]</td>
                         <td>@Convert.ToDateTime(dr["Created"]).ToString("dd-MM-yyyy")</td>
@@ -72,7 +78,7 @@
                                 <div class="me-2">
                                     <form method="post" asp-area="MST_Branch" asp-controller="MST_Branch" asp-action="MST_BranchDelete">
                                         <input type="hidden" value="@Convert.ToInt32(dr["BranchID"])" name="BranchID" />
-                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete Branch : @dr["BranchName"] ')">Delete</button>
                                     </form>
                                 </div>
                                 <div class="ms-2">

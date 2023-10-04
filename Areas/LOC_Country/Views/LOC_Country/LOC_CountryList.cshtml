@@ -10,27 +10,32 @@
     <div class="body">
 
         @*Page Title*@
-       @* <div class="pagetitle">
-            <h1>Dashboard</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a class="nav-link" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryList">Home</a></li>
-                    <li class="breadcrumb-item active">Country</li>
-                </ol>
-            </nav>
+        @* <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a class="nav-link" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryList">Home</a></li>
+        <li class="breadcrumb-item active">Country</li>
+        </ol>
+        </nav>
         </div>*@<!-- End Page Title -->
-
-        <breadcrumb></breadcrumb>
 
         <div class="d-flex mt-3 mb-3">
             <h3>Country List</h3>
         </div>
 
+
+        @if (TempData["LOC_Country_Insert_Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["LOC_Country_Insert_Message"]
+            </div>
+        }
+
         @*Filter Data*@
         <form class="row my-3 p-3" style="border:1px solid black">
             <div><h2>Filter</h2></div>
 
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="col-6">
                 <input type="text" placeholder="Enter Country Name" asp-for="@filterModel.CountryName" class="form-control mt-2" id="inputAddress">
             </div>
@@ -52,7 +57,7 @@
         <div class="table-header d-flex">
             <div class="add-button mr-auto">
                 <a asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryAdd">
-                    <input type="button" class="btn btn-success" value="Add New Record" />
+                    <input type="button" class="btn btn-success" value="Add New Record" onclick="@ViewBag.AU = Add" />
                 </a>
             </div>
             <div class="pull-right col-xl-4 ms-lg-auto">
@@ -84,13 +89,13 @@
                                 <div class="me-2">
                                     <form method="post" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryDelete">
                                         <input type="hidden" value="@Convert.ToInt32(dr["CountryID"])" name="CountryID" />
-                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete Country : @dr["CountryName"] ')">Delete</button>
                                     </form>
                                 </div>
                                 <div class="ms-2">
                                     <form asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="LOC_CountryAdd">
                                         <input type="hidden" value="@Convert.ToInt32(dr["CountryID"])" name="CountryID" />
-                                        <button type="submit" class="btn btn-info" value="Update">Update</button>
+                                        <button type="submit" class="btn btn-info" value="Update" onclick="@ViewBag.AU = Update">Update</button>
                                     </form>
                                 </div>
                             </div>
@@ -113,6 +118,8 @@
                 });
             });
         });
+
+
     </script>
 }
 

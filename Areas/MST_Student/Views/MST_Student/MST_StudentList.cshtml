@@ -12,6 +12,14 @@
         <div class="d-flex mt-3 mb-3">
             <h3>Student List</h3>
         </div>
+
+        @if (TempData["MST_Student_Insert_Message"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["MST_Student_Insert_Message"]
+            </div>
+        }
+
         <div class="container-fluid border border-dark p-4">
             <form class="row">
                 <div>
@@ -40,7 +48,7 @@
                 </div>
             </form>
         </div>
-        <div class="table-header d-flex">
+        <div class="table-header d-flex mt-3">
             <div class="add-button mr-auto">
                 <a asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentAdd">
                     <input type="button" class="btn btn-success" value="Add New Record" />
@@ -66,7 +74,6 @@
                     <th scope="col">Age</th>
                     <th scope="col">IsActive</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Password</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -85,13 +92,12 @@
                         <td>@dr["Age"]</td>
                         <td>@dr["IsActive"]</td>
                         <td>@dr["Gender"]</td>
-                        <td>@dr["Password"]</td>
                         <td>
                             <div class="d-flex">
                                 <div class="me-2">
                                     <form method="post" asp-area="MST_Student" asp-controller="MST_Student" asp-action="MST_StudentDelete">
                                         <input type="hidden" value="@Convert.ToInt32(dr["StudentID"])" name="StudentID" />
-                                        <button type="submit" class="btn btn-danger" value="Delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure you want to delete Student : @dr["StudentName"] ')">Delete</button>
                                     </form>
                                 </div>
                                 <div class="ms-2">
